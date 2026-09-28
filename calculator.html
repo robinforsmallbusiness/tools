@@ -81,6 +81,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .opt-desc{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.4;display:block}
 .opt-price{font-size:12.5px;font-weight:800;color:var(--rust);white-space:nowrap;padding-left:10px;flex-shrink:0}
 .opt-price.incl{color:var(--teal)}
+.opt-price.quote{color:var(--amber)}
+
+.quote-hint{color:var(--amber);font-weight:700}
+
+/* ── ADD-ANOTHER ROWS (marketplaces / tools) ── */
+.other-row{border:1px dashed var(--border);border-radius:8px;padding:10px 12px;margin-top:8px;background:#FFFDF3}
+.other-row-top{display:flex;align-items:center;gap:8px}
+.other-name-input{flex:1;border:2px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;font-family:inherit;outline:none;color:var(--text)}
+.other-name-input:focus{border-color:var(--orange)}
+.other-name-input::placeholder{color:#b0a890;font-weight:400}
+.other-remove{border:none;background:transparent;color:var(--muted);font-size:16px;font-weight:700;cursor:pointer;padding:2px 9px;line-height:1;border-radius:6px;flex-shrink:0}
+.other-remove:hover{background:#FBE7E7;color:var(--rust)}
+.other-mode{display:flex;gap:16px;margin-top:8px;font-size:11.5px;color:var(--muted);flex-wrap:wrap}
+.other-mode label{display:flex;align-items:center;gap:5px;cursor:pointer}
+.other-mode input[type="radio"]{accent-color:var(--orange);width:13px;height:13px;cursor:pointer;margin:0}
+.add-row-btn{margin-top:10px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;border:2px dashed var(--copper);background:transparent;color:var(--copper);cursor:pointer;font-family:inherit}
+.add-row-btn:hover{background:#FFFDE8}
 
 /* ── BADGES ── */
 .badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;vertical-align:middle}
@@ -125,8 +142,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .item-name{color:var(--text);flex:1}
 .item-price{font-weight:700;color:var(--rust);white-space:nowrap}
 .item-price.item-incl{color:var(--teal);font-size:11px}
+.item-price.item-quote{color:var(--amber);font-size:11px}
 .item-price.item-discount{color:var(--rust)}
 .empty-msg{color:var(--muted);font-style:italic;font-size:13px;padding:6px 0}
+.quote-banner{background:#FFF3DA;border:1px solid var(--amber);border-radius:8px;padding:9px 13px;font-size:12px;font-weight:700;color:#7A4B00;margin-bottom:10px}
+.prodcnt-hidden{display:none}
 .cat-row{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding-top:14px;padding-bottom:2px;font-weight:700}
 
 /* ── TOTAL ── */
@@ -277,7 +297,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
             <span class="ind-r"></span>
             <span class="opt-body">
               <span class="opt-name">E-Commerce Store</span>
-              <span class="opt-desc">Full online shop where customers browse and buy products. Built on Shopify (primary) or Wix (alternative).</span>
+              <span class="opt-desc">Full online shop where customers browse and buy products. Choose the platform below — Shopify, Wix, or WordPress + WooCommerce.</span>
             </span>
             <span class="opt-price">from $3,000</span>
           </label>
@@ -552,7 +572,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <div id="ecom-block" class="cond">
       <hr class="div">
       <div class="q">
+        <div class="q-lbl">E-Commerce Platform</div>
+        <div class="opts">
+          <div class="opt">
+            <input type="radio" name="ecom-platform" id="plat-shopify" value="shopify" data-price="0" data-label="Platform: Shopify">
+            <label class="opt-lbl" for="plat-shopify"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">Shopify</span><span class="opt-desc">Hosted e-commerce platform — fast to launch, low maintenance</span></span><span class="opt-price incl">Included</span></label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="ecom-platform" id="plat-wix" value="wix" data-price="0" data-label="Platform: Wix">
+            <label class="opt-lbl" for="plat-wix"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">Wix</span><span class="opt-desc">Hosted platform — good fit for smaller, simpler stores</span></span><span class="opt-price incl">Included</span></label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="ecom-platform" id="plat-woo" value="woo" data-price="400" data-label="Platform: WordPress + WooCommerce">
+            <label class="opt-lbl" for="plat-woo"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">WordPress + WooCommerce</span><span class="opt-desc">Self-hosted and fully customizable. Covers hosting setup, plugin configuration, and security hardening</span></span><span class="opt-price">+$400</span></label>
+          </div>
+        </div>
+      </div>
+
+      <hr class="div">
+
+      <div class="q" id="prodcnt-wrap">
         <div class="q-lbl">How many products will be sold?</div>
+        <div class="q-hint">For products being built by hand — not needed if the catalog is coming in via migration below</div>
         <div class="opts">
           <div class="opt">
             <input type="radio" name="prod-cnt" id="pc-25" value="u25" data-price="0" data-label="Up to 25 Products">
@@ -567,11 +608,142 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
             <label class="opt-lbl" for="pc-500"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">101 – 500 Products</span></span><span class="opt-price">+$800</span></label>
           </div>
           <div class="opt">
-            <input type="radio" name="prod-cnt" id="pc-max" value="500+" data-price="1500" data-label="500+ Products">
-            <label class="opt-lbl" for="pc-max"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">500+ Products</span></span><span class="opt-price">+$1,500</span></label>
+            <input type="radio" name="prod-cnt" id="pc-2500" value="501-2500" data-price="1600" data-label="501–2,500 Products">
+            <label class="opt-lbl" for="pc-2500"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">501 – 2,500 Products</span></span><span class="opt-price">+$1,600</span></label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="prod-cnt" id="pc-10000" value="2501-10000" data-price="2800" data-label="2,501–10,000 Products">
+            <label class="opt-lbl" for="pc-10000"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">2,501 – 10,000 Products</span></span><span class="opt-price">+$2,800</span></label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="prod-cnt" id="pc-10000p" value="10000+" data-price="0" data-quote="true" data-label="10,000+ Products (Quote Required)">
+            <label class="opt-lbl" for="pc-10000p"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">10,000+ Products</span></span><span class="opt-price quote">Quote Required</span></label>
           </div>
         </div>
       </div>
+
+      <div class="q">
+        <div class="q-lbl">Product Migration from an Existing Platform</div>
+        <div class="q-hint">Using automated tools (APIs, apps, plugins) the client pays for — covers tool setup, field mapping, a spot-check sample, and fixing anything the tool flags as failed. Replaces the product count fee above.</div>
+        <div class="opts">
+          <div class="opt">
+            <input type="radio" name="migration" id="mig-none" value="none" data-price="0" data-label="">
+            <label class="opt-lbl" for="mig-none"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">No Migration Needed</span></span><span class="opt-price incl">N/A</span></label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="migration" id="mig-100" value="u100" data-price="150" data-label="Product Migration — Up to 100 Products">
+            <label class="opt-lbl" for="mig-100"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">Up to 100 Products</span></span><span class="opt-price">+$150</span></label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="migration" id="mig-1000" value="101-1000" data-price="300" data-label="Product Migration — 101–1,000 Products">
+            <label class="opt-lbl" for="mig-1000"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">101 – 1,000 Products</span></span><span class="opt-price">+$300</span></label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="migration" id="mig-5000" value="1001-5000" data-price="500" data-label="Product Migration — 1,001–5,000 Products">
+            <label class="opt-lbl" for="mig-5000"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">1,001 – 5,000 Products</span></span><span class="opt-price">+$500</span></label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="migration" id="mig-15000" value="5001-15000" data-price="750" data-label="Product Migration — 5,001–15,000 Products">
+            <label class="opt-lbl" for="mig-15000"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">5,001 – 15,000 Products</span></span><span class="opt-price">+$750</span></label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="migration" id="mig-15000p" value="15000+" data-price="0" data-quote="true" data-label="Product Migration — 15,000+ Products (Quote Required)">
+            <label class="opt-lbl" for="mig-15000p"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">15,000+ Products</span></span><span class="opt-price quote">Quote Required</span></label>
+          </div>
+        </div>
+      </div>
+
+      <hr class="div">
+
+      <div class="q">
+        <div class="q-lbl">Marketplace Integrations</div>
+        <div class="q-hint">Connect the store to sell on additional marketplaces — priced per marketplace</div>
+        <div class="opts">
+          <div class="opt">
+            <input type="checkbox" id="mkt-amazon" data-price="400" data-label="Marketplace Integration — Amazon">
+            <label class="opt-lbl" for="mkt-amazon"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">Amazon</span></span><span class="opt-price">+$400</span></label>
+          </div>
+          <div class="opt">
+            <input type="checkbox" id="mkt-ebay" data-price="400" data-label="Marketplace Integration — eBay">
+            <label class="opt-lbl" for="mkt-ebay"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">eBay</span></span><span class="opt-price">+$400</span></label>
+          </div>
+          <div class="opt">
+            <input type="checkbox" id="mkt-etsy" data-price="400" data-label="Marketplace Integration — Etsy">
+            <label class="opt-lbl" for="mkt-etsy"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">Etsy</span></span><span class="opt-price">+$400</span></label>
+          </div>
+        </div>
+        <div id="mkt-other-rows"></div>
+        <button type="button" class="add-row-btn" onclick="addOtherRow('marketplace')">+ Add Another Marketplace</button>
+      </div>
+
+      <div class="q">
+        <div class="q-lbl">Multi-Channel Sync</div>
+        <div class="opts">
+          <div class="opt">
+            <input type="checkbox" id="mc-sync" data-price="500" data-label="Multi-Channel Inventory & Order Sync">
+            <label class="opt-lbl" for="mc-sync"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">Multi-Channel Inventory & Order Sync</span><span class="opt-desc">Keep stock and orders aligned across the website and every connected marketplace</span></span><span class="opt-price">+$500</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-lbl">Tool Integrations</div>
+        <div class="q-hint">Connect the store to other business tools — priced per connection</div>
+        <div class="opts">
+          <div class="opt">
+            <input type="checkbox" id="tool-ship" data-price="250" data-label="Tool Integration — Shipping Software">
+            <label class="opt-lbl" for="tool-ship"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">Shipping Software</span></span><span class="opt-price">+$250</span></label>
+          </div>
+          <div class="opt">
+            <input type="checkbox" id="tool-acct" data-price="300" data-label="Tool Integration — Accounting Software">
+            <label class="opt-lbl" for="tool-acct"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">Accounting Software</span></span><span class="opt-price">+$300</span></label>
+          </div>
+          <div class="opt">
+            <input type="checkbox" id="tool-email" data-price="200" data-label="Tool Integration — Email Marketing Platform">
+            <label class="opt-lbl" for="tool-email"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">Email Marketing Platform</span></span><span class="opt-price">+$200</span></label>
+          </div>
+          <div class="opt">
+            <input type="checkbox" id="tool-crm" data-price="300" data-label="Tool Integration — CRM">
+            <label class="opt-lbl" for="tool-crm"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">CRM</span></span><span class="opt-price">+$300</span></label>
+          </div>
+        </div>
+        <div id="tool-other-rows"></div>
+        <button type="button" class="add-row-btn" onclick="addOtherRow('tool')">+ Add Another Tool</button>
+      </div>
+
+      <hr class="div">
+
+      <div class="q">
+        <div class="q-lbl">Payments & Compliance</div>
+        <div class="opts">
+          <div class="opt">
+            <input type="checkbox" id="pay-gateway" data-price="250" data-label="Payment Gateway / Merchant Account Setup">
+            <label class="opt-lbl" for="pay-gateway"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">Payment Gateway / Merchant Account Setup</span></span><span class="opt-price">+$250</span></label>
+          </div>
+          <div class="opt">
+            <input type="checkbox" id="tax-config" data-price="150" data-label="Sales Tax Configuration">
+            <label class="opt-lbl" for="tax-config"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">Sales Tax Configuration</span></span><span class="opt-price">+$150</span></label>
+          </div>
+          <div class="opt">
+            <input type="checkbox" id="state-restrict" data-price="350" data-label="State-Specific Order Restrictions / ID Verification">
+            <label class="opt-lbl" for="state-restrict"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">State-Specific Order Restrictions / ID Verification</span><span class="opt-desc">Age/ID verification and shipping restrictions for regulated products in certain states</span></span><span class="opt-price">+$350</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-lbl">Custom Development</div>
+        <div class="q-hint">For replacing connector apps altogether with one fully custom-built system — not the same as marking a single marketplace or tool "Needs custom integration" above</div>
+        <div class="opts">
+          <div class="opt">
+            <input type="checkbox" id="custom-dev" data-price="0" data-quote="true" data-label="Custom Integration Development (Quote Required)">
+            <label class="opt-lbl" for="custom-dev"><span class="ind-c"></span><span class="opt-body"><span class="opt-name">Custom Integration Development</span><span class="opt-desc">A fully custom-built system connecting the store to marketplaces and other tools directly — in place of connector apps entirely, for projects where off-the-shelf integration tools can't do the job. Final price confirmed after technical requirements are verified</span></span><span class="opt-price quote">Quote Required</span></label>
+          </div>
+        </div>
+      </div>
+
+      <hr class="div">
+
       <div class="q">
         <div class="q-lbl">E-Commerce add-ons</div>
         <div class="opts">
@@ -617,7 +789,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         </div>
         <div class="opt">
           <input type="radio" name="auto" id="au-adv" value="adv" data-price="700" data-label="Advanced Automation">
-          <label class="opt-lbl" for="au-adv"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">Advanced Automation</span><span class="opt-desc">Full suite — CRM integration, marketing sequences, inventory alerts, reporting dashboards. Minimal daily input required.</span></span><span class="opt-price">+$700</span></label>
+          <label class="opt-lbl" for="au-adv"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">Advanced Automation</span><span class="opt-desc">Full suite — workflow automation across your connected tools, marketing sequences, inventory alerts, reporting dashboards. Minimal daily input required. (Uses the tool integrations selected above, if any.)</span></span><span class="opt-price">+$700</span></label>
         </div>
       </div>
     </div>
@@ -759,6 +931,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
           <input type="radio" name="maint" id="m-std" value="std" data-monthly="199" data-label="Standard Maintenance — $199/mo">
           <label class="opt-lbl" for="m-std"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">Standard Maintenance — $199/mo</span><span class="opt-desc">Everything in Basic + up to 2 hrs of content updates monthly, performance monitoring, priority support</span></span><span class="opt-price">$199/mo</span></label>
         </div>
+        <div class="opt">
+          <input type="radio" name="maint" id="m-ecom" value="ecom" data-monthly="299" data-label="E-Commerce Maintenance — $299/mo">
+          <label class="opt-lbl" for="m-ecom"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">E-Commerce Maintenance — $299/mo</span><span class="opt-desc">Everything in Standard + monthly checkout and payment testing, integration and sync monitoring, and fixing sync errors</span></span><span class="opt-price">$299/mo</span></label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="maint" id="m-prem" value="premium" data-monthly="499" data-label="Premium / Priority Maintenance — $499/mo">
+          <label class="opt-lbl" for="m-prem"><span class="ind-r"></span><span class="opt-body"><span class="opt-name">Premium / Priority Maintenance — $499/mo</span><span class="opt-desc">Everything in E-Commerce Maintenance + more monthly support hours, faster response times, and handling updates when a connected platform changes</span></span><span class="opt-price">$499/mo</span></label>
+        </div>
       </div>
     </div>
     <hr class="div">
@@ -832,6 +1012,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <ul class="items" id="items-list">
     <li class="empty-msg">Select options above to build the estimate</li>
   </ul>
+
+  <!-- Quote-required banner -->
+  <div id="quote-banner" class="quote-banner" style="display:none"></div>
+
+  <!-- Third-party costs note -->
+  <div id="third-party-note" class="info" style="display:none">Third-party services (integration software, hosting, payment processing, verification) are billed directly to the client and are not included in this project price.</div>
 
   <!-- Totals -->
   <div id="subtotal-row" class="subtotal-row" style="display:none">
@@ -983,8 +1169,75 @@ function syncConditionals() {
   }
   if (!showEcom) {
     document.querySelectorAll('input[name="prod-cnt"]').forEach(i => i.checked = false);
-    ['ec-sync','ec-cust','ec-sub'].forEach(id => { $(id).checked = false; });
+    document.querySelectorAll('input[name="migration"]').forEach(i => i.checked = false);
+    document.querySelectorAll('input[name="ecom-platform"]').forEach(i => i.checked = false);
+    ['ec-sync','ec-cust','ec-sub','mkt-amazon','mkt-ebay','mkt-etsy','mc-sync',
+     'tool-ship','tool-acct','tool-email','tool-crm',
+     'pay-gateway','tax-config','state-restrict','custom-dev'].forEach(id => { $(id).checked = false; });
+    $('mkt-other-rows').innerHTML = '';
+    $('tool-other-rows').innerHTML = '';
   }
+
+  // Migration replaces the hand-built product-count fee — hide that question while a migration tier is chosen
+  const migrationVal = document.querySelector('input[name="migration"]:checked')?.value || 'none';
+  $('prodcnt-wrap').classList.toggle('prodcnt-hidden', migrationVal !== 'none');
+}
+
+// Large-catalog setup (category structure, filters, search) scales with effective catalog size,
+// whether that size comes from the hand-built tier or the migration tier
+function largeCatalogFee(prodCntVal, migrationVal) {
+  if (migrationVal !== 'none') {
+    if (migrationVal === '1001-5000') return 400;
+    if (migrationVal === '5001-15000' || migrationVal === '15000+') return 600;
+    return 0;
+  }
+  if (prodCntVal === '501-2500') return 400;
+  if (prodCntVal === '2501-10000' || prodCntVal === '10000+') return 600;
+  return 0;
+}
+
+let otherRowSeq = 0;
+function addOtherRow(kind) {
+  const isMkt = kind === 'marketplace';
+  const price = isMkt ? 400 : 250;
+  const rowId = `other-${kind}-${++otherRowSeq}`;
+  const container = $(isMkt ? 'mkt-other-rows' : 'tool-other-rows');
+
+  const row = document.createElement('div');
+  row.className = 'other-row';
+  row.innerHTML = `
+    <div class="other-row-top">
+      <input type="text" class="other-name-input" placeholder="${isMkt ? 'Marketplace name' : 'Tool name'}" maxlength="60">
+      <button type="button" class="other-remove" aria-label="Remove">&times;</button>
+    </div>
+    <div class="other-mode">
+      <label><input type="radio" name="mode-${rowId}" value="connector" checked> Connector app available <b>(+${fmt(price)})</b></label>
+      <label><input type="radio" name="mode-${rowId}" value="custom"> Needs custom integration <span class="quote-hint">(Quote Required)</span></label>
+    </div>`;
+
+  row.dataset.group = isMkt ? 'Marketplace Integration' : 'Tool Integration';
+  row.dataset.price = price;
+  row.querySelector('.other-name-input').addEventListener('input', calc);
+  row.querySelector('.other-remove').addEventListener('click', () => { row.remove(); calc(); });
+
+  container.appendChild(row);
+  calc();
+}
+
+function gatherOtherRows() {
+  const items = [];
+  document.querySelectorAll('.other-row').forEach(row => {
+    const name = row.querySelector('.other-name-input').value.trim();
+    if (!name) return;
+    const isCustom = row.querySelector('input[type="radio"]:checked')?.value === 'custom';
+    const price = parseInt(row.dataset.price || '0');
+    items.push({
+      label: `${row.dataset.group} — ${name}${isCustom ? ' (Custom Integration — Quote Required)' : ''}`,
+      price: isCustom ? 0 : price,
+      isQuote: isCustom
+    });
+  });
+  return items;
 }
 
 // ── Payment plan calculations ────────────────────────────────────
@@ -1039,21 +1292,38 @@ function calc() {
   const oneTimeItems = [];
   let subtotal = 0;
 
+  const migrationVal = document.querySelector('input[name="migration"]:checked')?.value || 'none';
+  const prodCntVal    = document.querySelector('input[name="prod-cnt"]:checked')?.value || '';
+
   document.querySelectorAll('input[type="radio"]:checked').forEach(el => {
     if ('monthly' in el.dataset) return;
+    if (el.name === 'prod-cnt' && migrationVal !== 'none') return; // migration covers these products
     const price = parseInt(el.dataset.price || '0');
     const label = (el.dataset.label || '').trim();
     if (!label) return;
+    const isQuote = el.dataset.quote === 'true';
     subtotal += price;
-    oneTimeItems.push({label, price});
+    oneTimeItems.push({label, price, isQuote});
   });
 
   document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
     const price = parseInt(el.dataset.price || '0');
     const label = (el.dataset.label || '').trim();
     if (!label) return;
+    const isQuote = el.dataset.quote === 'true';
     subtotal += price;
-    oneTimeItems.push({label, price});
+    oneTimeItems.push({label, price, isQuote});
+  });
+
+  const catalogFee = largeCatalogFee(prodCntVal, migrationVal);
+  if (catalogFee > 0) {
+    subtotal += catalogFee;
+    oneTimeItems.push({label: 'Large Catalog Setup — Category Structure, Filters & Search', price: catalogFee, isQuote: false});
+  }
+
+  gatherOtherRows().forEach(it => {
+    subtotal += it.price;
+    oneTimeItems.push(it);
   });
 
   // Discount
@@ -1088,12 +1358,26 @@ function calc() {
     list.innerHTML = oneTimeItems.map(it =>
       `<li class="item">
         <span class="item-name">${it.label}</span>
-        <span class="item-price ${it.price === 0 ? 'item-incl' : ''}">
-          ${it.price === 0 ? 'included' : fmt(it.price)}
+        <span class="item-price ${it.isQuote ? 'item-quote' : (it.price === 0 ? 'item-incl' : '')}">
+          ${it.isQuote ? 'Quote required' : (it.price === 0 ? 'included' : fmt(it.price))}
         </span>
       </li>`
     ).join('');
   }
+
+  // ── Quote-required banner ──
+  const quoteCount = oneTimeItems.filter(it => it.isQuote).length;
+  const banner = $('quote-banner');
+  if (quoteCount > 0) {
+    banner.style.display = 'block';
+    banner.textContent = `This estimate is incomplete — ${quoteCount} item${quoteCount > 1 ? 's' : ''} ${quoteCount > 1 ? 'require' : 'requires'} a custom quote before final pricing.`;
+  } else {
+    banner.style.display = 'none';
+  }
+
+  // ── Third-party costs note ──
+  const showThirdParty = $('ecom-block').classList.contains('on');
+  $('third-party-note').style.display = showThirdParty ? 'block' : 'none';
 
   // ── Discount rows ──
   if (discAmt > 0) {
@@ -1165,7 +1449,7 @@ function calc() {
   $('summary-client').textContent = cn ? 'Prepared for ' + cn : '';
 
   // Store for print
-  window._calcState = {total, subtotal, discAmt, discVal, discType, monthly, monthlyItems, oneTimeItems, customAmounts, customLabels, nPay};
+  window._calcState = {total, subtotal, discAmt, discVal, discType, monthly, monthlyItems, oneTimeItems, customAmounts, customLabels, nPay, quoteCount, showThirdParty};
 }
 
 // ── Print / Save PDF ─────────────────────────────────────────────
@@ -1179,8 +1463,14 @@ function printSummary() {
   const rowsHtml = (s.oneTimeItems || []).map(it => `
     <tr>
       <td class="item-td">${it.label}</td>
-      <td class="price-td">${it.price === 0 ? '<span class="incl-tag">included</span>' : fmt(it.price)}</td>
+      <td class="price-td">${it.isQuote ? '<span class="quote-tag">Quote required</span>' : (it.price === 0 ? '<span class="incl-tag">included</span>' : fmt(it.price))}</td>
     </tr>`).join('');
+
+  const quoteBannerHtml = (s.quoteCount||0) > 0 ? `
+    <div class="quote-banner-print">This estimate is incomplete — ${s.quoteCount} item${s.quoteCount > 1 ? 's' : ''} ${s.quoteCount > 1 ? 'require' : 'requires'} a custom quote before final pricing.</div>` : '';
+
+  const thirdPartyHtml = s.showThirdParty ? `
+    <div class="third-party-print">Third-party services (integration software, hosting, payment processing, verification) are billed directly to the client and are not included in this project price.</div>` : '';
 
   const discRow = s.discAmt > 0 ? `
     <tr class="subtotal-tr"><td>Subtotal</td><td class="price-td">${fmt(s.subtotal)}</td></tr>
@@ -1256,6 +1546,9 @@ function printSummary() {
   .item-td{padding:5px 0;font-size:10.5pt;color:#2A2020}
   .price-td{padding:5px 0;text-align:right;font-weight:700;font-size:10.5pt;color:#1A1A1A;white-space:nowrap;padding-left:16px}
   .incl-tag{color:#2B8373;font-size:9pt;font-weight:600}
+  .quote-tag{color:#C4472D;font-size:9pt;font-weight:700}
+  .quote-banner-print{background:#FFF3DA;border:1px solid #F1991A;border-radius:8px;padding:9px 13px;font-size:9.5pt;font-weight:700;color:#7A4B00;margin-top:14px}
+  .third-party-print{background:#F6D4C4;border:1px solid #D97E50;border-radius:8px;padding:9px 13px;font-size:9pt;color:#6B3020;margin-top:10px}
   .subtotal-tr td{opacity:.6;font-size:10pt;padding-top:8px}
   .disc-tr td{padding:2px 0}
   .disc-amt{color:#C4472D}
@@ -1327,6 +1620,9 @@ function printSummary() {
     </tbody>
   </table>
 
+  ${quoteBannerHtml}
+  ${thirdPartyHtml}
+
   <div class="total-block">
     <span class="total-lbl">Project Total</span>
     <span class="total-num">${fmt(s.total || 0)}</span>
@@ -1368,13 +1664,15 @@ function copyEstimate() {
   const lines = ['ROBIN — WEBSITE ESTIMATE'];
   if (cn) lines.push('Client: ' + cn);
   lines.push('Date: ' + $('summary-date').textContent, '');
-  (s.oneTimeItems||[]).forEach(it => lines.push(`• ${it.label}: ${it.price===0?'included':fmt(it.price)}`));
+  (s.oneTimeItems||[]).forEach(it => lines.push(`• ${it.label}: ${it.isQuote ? 'quote required' : (it.price===0?'included':fmt(it.price))}`));
   if (s.discAmt > 0) {
     lines.push(`  Subtotal: ${fmt(s.subtotal)}`);
     lines.push(`  Discount: −${fmt(s.discAmt)}`);
   }
   lines.push('', 'PROJECT TOTAL: ' + fmt(s.total||0));
   if (s.monthly > 0) lines.push('MONTHLY ONGOING: ' + fmt(s.monthly) + '/mo');
+  if ((s.quoteCount||0) > 0) lines.push('', `NOTE: ${s.quoteCount} item(s) require a custom quote before final pricing.`);
+  if (s.showThirdParty) lines.push('', 'Third-party services (integration software, hosting, payment processing, verification) are billed directly to the client and are not included in this project price.');
   const notes = $('meeting-notes').value.trim();
   if (notes) lines.push('', 'NOTES:', notes);
   navigator.clipboard.writeText(lines.join('\n'))
@@ -1386,6 +1684,8 @@ function copyEstimate() {
 function resetAll() {
   if (!confirm('Clear all selections and start over?')) return;
   document.querySelectorAll('input[type="radio"],input[type="checkbox"]').forEach(i=>i.checked=false);
+  $('mkt-other-rows').innerHTML = '';
+  $('tool-other-rows').innerHTML = '';
   $('client-name').value = '';
   $('meeting-notes').value = '';
   $('disc-val').value = '';
