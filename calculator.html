@@ -166,9 +166,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 /* ── PAYMENT PLANS ── */
 .plans{margin-top:20px}
 .plans-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;font-weight:700}
-.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.plan{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;box-shadow:var(--sh)}
+.plans-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.plan{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;box-shadow:var(--sh);position:relative}
 .plan-name{font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px}
+.plan-amt-label{font-size:9px;font-weight:700;color:var(--copper);text-transform:uppercase;letter-spacing:.3px;margin-top:3px}
 .plan-amt{font-size:18px;font-weight:900;color:var(--orange);}
 .plan-desc{font-size:10px;color:var(--muted);margin-top:5px;line-height:1.4}
 .plan-custom-inputs{margin-top:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end}
@@ -179,6 +180,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .cinput::placeholder{color:#b0a890;font-weight:400}
 .custom-toggle-row{margin-top:12px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none}
 .custom-toggle-row input{accent-color:var(--orange);width:14px;height:14px;cursor:pointer}
+#custom-plans-rows{margin-top:8px}
+.custom-plan-row{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border)}
+.custom-plan-row:first-child{margin-top:0;padding-top:0;border-top:none}
+.custom-plan-card{max-width:calc(50% - 4px)}
+.cplan-remove{position:absolute;top:6px;right:6px;border:none;background:transparent;color:var(--muted);font-size:16px;font-weight:700;cursor:pointer;padding:2px 8px;line-height:1;border-radius:6px}
+.cplan-remove:hover{background:#FBE7E7;color:var(--rust)}
 
 /* ── NOTES ── */
 .notes-wrap{margin-top:18px}
@@ -198,13 +205,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 /* ── RESPONSIVE ── */
 @media(max-width:600px){
-  .plans-grid{grid-template-columns:repeat(3,1fr)}
   .plan-custom-inputs{grid-template-columns:1fr 1fr}
   .total-amt{font-size:28px}
   .hdr-price-amt{font-size:22px}
 }
 @media(max-width:420px){
   .plans-grid{grid-template-columns:1fr}
+  .custom-plan-card{max-width:none}
 }
 
 /* ── PRINT — hide calculator, show summary page ── */
@@ -1048,56 +1055,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="plan" id="plan-5050">
         <div class="plan-name">50 / 50</div>
         <div class="plan-amt">—</div>
+        <div class="plan-amt-label">Due Today</div>
         <div class="plan-desc">50% now · 50% on delivery</div>
       </div>
       <div class="plan" id="plan-3pay">
-        <div class="plan-name">3-Payment</div>
+        <div class="plan-name">3-Payments</div>
         <div class="plan-amt">—</div>
+        <div class="plan-amt-label">Due Today</div>
         <div class="plan-desc">50% · 25% · 25%</div>
       </div>
-      <div class="plan" id="plan-6pay">
-        <div class="plan-name">6-Payment</div>
-        <div class="plan-amt">—</div>
-        <div class="plan-desc">50% + 5 equal payments</div>
-      </div>
     </div>
 
-    <!-- Custom plan toggle -->
-    <label class="custom-toggle-row" style="margin-top:14px">
-      <input type="checkbox" id="c-enable" onchange="toggleCustomPlan()">
-      Set up a custom payment plan
-    </label>
-
-    <!-- Custom plan section (hidden by default) -->
-    <div id="custom-section" style="display:none">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
-        <div class="plan" id="plan-custom">
-          <div class="plan-name">Custom</div>
-          <div class="plan-amt">—</div>
-          <div class="plan-desc">Configure below</div>
-        </div>
-      </div>
-      <div class="plan-custom-inputs" id="custom-inputs">
-        <div>
-          <div class="cinput-lbl">Number of Payments</div>
-          <input type="number" class="cinput" id="c-payments" value="4" min="1" max="24" placeholder="4" oninput="calc()">
-        </div>
-        <div>
-          <div class="cinput-lbl">1st Payment %</div>
-          <input type="number" class="cinput" id="c-first-pct" value="50" min="1" max="99" oninput="calc()">
-        </div>
-        <div style="display:flex;align-items:flex-end">
-          <div style="width:100%">
-            <div class="cinput-lbl">Preview</div>
-            <div style="font-size:12px;color:var(--muted);padding:7px 0;line-height:1.4" id="c-preview">Enter values above</div>
-          </div>
-        </div>
-      </div>
-      <label class="custom-toggle-row">
-        <input type="checkbox" id="c-show" checked onchange="calc()">
-        Show custom plan in printed summary
-      </label>
-    </div>
+    <!-- Custom payment plans (repeatable) -->
+    <div id="custom-plans-rows"></div>
+    <button type="button" class="add-row-btn" style="margin-top:14px" onclick="addCustomPlanRow()">+ Add Custom Payment Plan</button>
   </div>
 
   <!-- Notes -->
@@ -1125,10 +1096,68 @@ const pct = (n, total) => total > 0 ? Math.round(n / total * 100) + '%' : '0%';
 // Set date
 $('summary-date').textContent = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
 
-// ── Custom plan toggle ───────────────────────────────────────────
-function toggleCustomPlan() {
-  $('custom-section').style.display = $('c-enable').checked ? 'block' : 'none';
+// ── Custom payment plans (repeatable) ────────────────────────────
+let customPlanSeq = 0;
+function addCustomPlanRow() {
+  const seq = ++customPlanSeq;
+  const row = document.createElement('div');
+  row.className = 'custom-plan-row';
+  row.innerHTML = `
+    <div class="plan custom-plan-card">
+      <button type="button" class="cplan-remove" aria-label="Remove plan">&times;</button>
+      <div class="plan-name cplan-title">Custom Plan ${seq}</div>
+      <div class="plan-amt">—</div>
+      <div class="plan-amt-label">Due Today</div>
+      <div class="plan-desc">Configure below</div>
+    </div>
+    <div class="plan-custom-inputs">
+      <div>
+        <div class="cinput-lbl">Plan Name (optional)</div>
+        <input type="text" class="cinput cplan-name" placeholder="e.g. Extended Plan" maxlength="40">
+      </div>
+      <div>
+        <div class="cinput-lbl">Number of Payments</div>
+        <input type="number" class="cinput cplan-payments" value="4" min="1" max="24" placeholder="4">
+      </div>
+      <div>
+        <div class="cinput-lbl">1st Payment %</div>
+        <input type="number" class="cinput cplan-first-pct" value="50" min="1" max="99">
+      </div>
+    </div>
+    <label class="custom-toggle-row">
+      <input type="checkbox" class="cplan-show" checked>
+      Show this plan in printed summary
+    </label>`;
+
+  row.querySelector('.cplan-remove').addEventListener('click', () => { row.remove(); calc(); });
+  row.querySelectorAll('.cplan-name, .cplan-payments, .cplan-first-pct').forEach(inp => inp.addEventListener('input', calc));
+
+  $('custom-plans-rows').appendChild(row);
   calc();
+}
+
+function computeCustomPlans(total) {
+  const plans = [];
+  document.querySelectorAll('.custom-plan-row').forEach((row, idx) => {
+    const name = row.querySelector('.cplan-name').value.trim() || `Custom Plan ${idx + 1}`;
+    row.querySelector('.cplan-title').textContent = name;
+
+    const nPay = Math.max(1, parseInt(row.querySelector('.cplan-payments').value) || 4);
+    const firstPctRaw = parseFloat(row.querySelector('.cplan-first-pct').value);
+    let splits;
+    if (!isNaN(firstPctRaw) && firstPctRaw > 0 && firstPctRaw < 100 && nPay > 1) {
+      const rest = (100 - firstPctRaw) / (nPay - 1) / 100;
+      splits = [firstPctRaw / 100, ...Array(nPay - 1).fill(rest)];
+    } else {
+      splits = Array(nPay).fill(1 / nPay);
+    }
+    const amounts = computeAmounts(total, splits);
+    const labels  = splits.map(s => Math.round(s * 100) + '%');
+    renderPlan(row.querySelector('.custom-plan-card'), amounts, labels);
+
+    plans.push({ name, showInPrint: row.querySelector('.cplan-show').checked });
+  });
+  return plans;
 }
 
 // ── Discount type toggle ─────────────────────────────────────────
@@ -1256,21 +1285,33 @@ function computeAmounts(total, splits) {
 }
 
 function renderPlan(planEl, amounts, splitLabels) {
-  const amtEl  = planEl.querySelector('.plan-amt');
-  const descEl = planEl.querySelector('.plan-desc');
+  const amtEl   = planEl.querySelector('.plan-amt');
+  const descEl  = planEl.querySelector('.plan-desc');
+  const labelEl = planEl.querySelector('.plan-amt-label');
 
   if (!amounts || amounts[0] <= 0) {
-    amtEl.textContent  = '—';
-    descEl.textContent = splitLabels.join(' · ');
+    amtEl.textContent = '—';
+    if (labelEl) labelEl.style.display = 'none';
+    descEl.style.display = splitLabels.length > 1 ? '' : 'none';
+    descEl.textContent   = splitLabels.length > 1 ? splitLabels.join(' · ') : '';
     return;
   }
 
   const first = amounts[0];
   amtEl.textContent = fmt(first);
+  if (labelEl) labelEl.style.display = '';
 
+  const n = amounts.length;
+  if (n === 1) {
+    // Paid in full up front — no breakdown needed
+    descEl.style.display = 'none';
+    descEl.textContent = '';
+    return;
+  }
+
+  descEl.style.display = '';
   const allSame = amounts.every(a => Math.abs(a - first) <= 1);
   if (allSame) {
-    const n = amounts.length;
     descEl.textContent = n === 2
       ? splitLabels.join(' · ')
       : n + ' equal payments';
@@ -1418,38 +1459,16 @@ function calc() {
   }
 
   // ── Payment plans ──
-  renderPlan($('plan-5050'), computeAmounts(total,[0.5,0.5]),                          ['50%','50%']);
-  renderPlan($('plan-3pay'), computeAmounts(total,[0.5,0.25,0.25]),                    ['50%','25%','25%']);
-  renderPlan($('plan-6pay'), computeAmounts(total,[0.5,0.1,0.1,0.1,0.1,0.1]),         ['50%','10%','10%','10%','10%','10%']);
-
-  // Custom plan (only when enabled)
-  let customAmounts = [], customLabels = [], nPay = 4;
-  if ($('c-enable').checked) {
-    nPay = Math.max(1, parseInt($('c-payments').value) || 4);
-    const firstPctRaw = parseFloat($('c-first-pct').value);
-    let customSplits;
-    if (!isNaN(firstPctRaw) && firstPctRaw > 0 && firstPctRaw < 100 && nPay > 1) {
-      const rest = (100 - firstPctRaw) / (nPay - 1) / 100;
-      customSplits = [firstPctRaw / 100, ...Array(nPay - 1).fill(rest)];
-    } else {
-      customSplits = Array(nPay).fill(1 / nPay);
-    }
-    customAmounts = computeAmounts(total, customSplits);
-    customLabels  = customSplits.map(s => Math.round(s * 100) + '%');
-    renderPlan($('plan-custom'), customAmounts, customLabels);
-    if (total > 0) {
-      $('c-preview').textContent = `${nPay} payments · first: ${fmt(customAmounts[0])}`;
-    } else {
-      $('c-preview').textContent = 'Enter values above';
-    }
-  }
+  renderPlan($('plan-5050'), computeAmounts(total,[0.5,0.5]),       ['50%','50%']);
+  renderPlan($('plan-3pay'), computeAmounts(total,[0.5,0.25,0.25]), ['50%','25%','25%']);
+  const customPlans = computeCustomPlans(total);
 
   // ── Client name in summary ──
   const cn = $('client-name').value.trim();
   $('summary-client').textContent = cn ? 'Prepared for ' + cn : '';
 
   // Store for print
-  window._calcState = {total, subtotal, discAmt, discVal, discType, monthly, monthlyItems, oneTimeItems, customAmounts, customLabels, nPay, quoteCount, showThirdParty};
+  window._calcState = {total, subtotal, discAmt, discVal, discType, monthly, monthlyItems, oneTimeItems, customPlans, quoteCount, showThirdParty};
 }
 
 // ── Print / Save PDF ─────────────────────────────────────────────
@@ -1458,7 +1477,6 @@ function printSummary() {
   const cn = $('client-name').value.trim();
   const notes = $('meeting-notes').value.trim();
   const dateStr = $('summary-date').textContent;
-  const showCustom = $('c-enable').checked && $('c-show').checked;
 
   const rowsHtml = (s.oneTimeItems || []).map(it => `
     <tr>
@@ -1492,8 +1510,7 @@ function printSummary() {
   // Payment plan rows
   const planRows = [
     {id:'plan-5050', name:'50 / 50'},
-    {id:'plan-3pay', name:'3-Payment'},
-    {id:'plan-6pay', name:'6-Payment'},
+    {id:'plan-3pay', name:'3-Payments'},
   ].map(p => {
     const el = $(p.id);
     const amt  = el.querySelector('.plan-amt').textContent;
@@ -1501,12 +1518,17 @@ function printSummary() {
     return `<tr><td class="plan-name-td">${p.name}</td><td class="plan-amt-td">${amt}</td><td class="plan-desc-td">${desc}</td></tr>`;
   }).join('');
 
-  const customPlanRow = showCustom && (s.total||0) > 0 ? (() => {
-    const el = $('plan-custom');
-    const amt  = el.querySelector('.plan-amt').textContent;
-    const desc = el.querySelector('.plan-desc').textContent;
-    return `<tr><td class="plan-name-td">Custom (${s.nPay}-Pay)</td><td class="plan-amt-td">${amt}</td><td class="plan-desc-td">${desc}</td></tr>`;
-  })() : '';
+  const customPlanRows = (s.total||0) > 0
+    ? Array.from(document.querySelectorAll('.custom-plan-row'))
+        .filter(row => row.querySelector('.cplan-show').checked)
+        .map(row => {
+          const card = row.querySelector('.custom-plan-card');
+          const name = row.querySelector('.cplan-title').textContent;
+          const amt  = card.querySelector('.plan-amt').textContent;
+          const desc = card.querySelector('.plan-desc').textContent;
+          return `<tr><td class="plan-name-td">${name}</td><td class="plan-amt-td">${amt}</td><td class="plan-desc-td">${desc}</td></tr>`;
+        }).join('')
+    : '';
 
   const notesSection = notes ? `
     <div class="section-break">
@@ -1565,6 +1587,7 @@ function printSummary() {
   .plan-name-td{font-weight:700;font-size:10pt;padding:5px 0;color:#1A1A1A;width:110px}
   .plan-amt-td{font-size:12pt;font-weight:900;color:#C4472D;padding:5px 12px 5px 0;white-space:nowrap}
   .plan-desc-td{font-size:9.5pt;color:#6B6060}
+  .plans-table thead td{font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#9A8C7A;border-bottom:1px solid #E8E5D0;padding-bottom:6px}
 
   /* Notes */
   .notes-body{font-size:10pt;color:#2A2020;line-height:1.6;white-space:pre-wrap}
@@ -1633,9 +1656,16 @@ function printSummary() {
   <div class="section-break">
     <div class="section-label">Payment Plan Options</div>
     <table class="plans-table">
+      <thead>
+        <tr>
+          <td class="plan-name-td">Plan</td>
+          <td class="plan-amt-td">Due Today</td>
+          <td class="plan-desc-td">Schedule</td>
+        </tr>
+      </thead>
       <tbody>
         ${planRows}
-        ${customPlanRow}
+        ${customPlanRows}
       </tbody>
     </table>
   </div>
@@ -1686,14 +1716,10 @@ function resetAll() {
   document.querySelectorAll('input[type="radio"],input[type="checkbox"]').forEach(i=>i.checked=false);
   $('mkt-other-rows').innerHTML = '';
   $('tool-other-rows').innerHTML = '';
+  $('custom-plans-rows').innerHTML = '';
   $('client-name').value = '';
   $('meeting-notes').value = '';
   $('disc-val').value = '';
-  $('c-payments').value = '4';
-  $('c-first-pct').value = '50';
-  $('c-enable').checked = false;
-  $('c-show').checked = true;
-  $('custom-section').style.display = 'none';
   syncConditionals();
   calc();
 }
