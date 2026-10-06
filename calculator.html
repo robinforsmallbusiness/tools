@@ -169,6 +169,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .plans-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .plan{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;box-shadow:var(--sh);position:relative}
 .plan-name{font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px}
+.plan-amt-label{font-size:9px;font-weight:700;color:var(--copper);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
 .plan-amt{font-size:18px;font-weight:900;color:var(--orange);}
 .plan-desc{font-size:10px;color:var(--muted);margin-top:5px;line-height:1.4}
 .plan-custom-inputs{margin-top:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end}
@@ -181,6 +182,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .custom-toggle-row input{accent-color:var(--orange);width:14px;height:14px;cursor:pointer}
 .custom-plan-row{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border)}
 .custom-plan-row:first-child{margin-top:0;padding-top:0;border-top:none}
+.custom-plan-card{max-width:calc(50% - 4px)}
 .cplan-remove{position:absolute;top:6px;right:6px;border:none;background:transparent;color:var(--muted);font-size:16px;font-weight:700;cursor:pointer;padding:2px 8px;line-height:1;border-radius:6px}
 .cplan-remove:hover{background:#FBE7E7;color:var(--rust)}
 
@@ -208,6 +210,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 }
 @media(max-width:420px){
   .plans-grid{grid-template-columns:1fr}
+  .custom-plan-card{max-width:none}
 }
 
 /* ── PRINT — hide calculator, show summary page ── */
@@ -1050,11 +1053,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <div class="plans-grid">
       <div class="plan" id="plan-5050">
         <div class="plan-name">50 / 50</div>
+        <div class="plan-amt-label">Due Today</div>
         <div class="plan-amt">—</div>
         <div class="plan-desc">50% now · 50% on delivery</div>
       </div>
       <div class="plan" id="plan-3pay">
-        <div class="plan-name">3-Payment</div>
+        <div class="plan-name">3-Payments</div>
+        <div class="plan-amt-label">Due Today</div>
         <div class="plan-amt">—</div>
         <div class="plan-desc">50% · 25% · 25%</div>
       </div>
@@ -1100,6 +1105,7 @@ function addCustomPlanRow() {
     <div class="plan custom-plan-card">
       <button type="button" class="cplan-remove" aria-label="Remove plan">&times;</button>
       <div class="plan-name cplan-title">Custom Plan ${seq}</div>
+      <div class="plan-amt-label">Due Today</div>
       <div class="plan-amt">—</div>
       <div class="plan-desc">Configure below</div>
     </div>
@@ -1278,21 +1284,33 @@ function computeAmounts(total, splits) {
 }
 
 function renderPlan(planEl, amounts, splitLabels) {
-  const amtEl  = planEl.querySelector('.plan-amt');
-  const descEl = planEl.querySelector('.plan-desc');
+  const amtEl   = planEl.querySelector('.plan-amt');
+  const descEl  = planEl.querySelector('.plan-desc');
+  const labelEl = planEl.querySelector('.plan-amt-label');
 
   if (!amounts || amounts[0] <= 0) {
-    amtEl.textContent  = '—';
-    descEl.textContent = splitLabels.join(' · ');
+    amtEl.textContent = '—';
+    if (labelEl) labelEl.style.display = 'none';
+    descEl.style.display = splitLabels.length > 1 ? '' : 'none';
+    descEl.textContent   = splitLabels.length > 1 ? splitLabels.join(' · ') : '';
     return;
   }
 
   const first = amounts[0];
   amtEl.textContent = fmt(first);
+  if (labelEl) labelEl.style.display = '';
 
+  const n = amounts.length;
+  if (n === 1) {
+    // Paid in full up front — no breakdown needed
+    descEl.style.display = 'none';
+    descEl.textContent = '';
+    return;
+  }
+
+  descEl.style.display = '';
   const allSame = amounts.every(a => Math.abs(a - first) <= 1);
   if (allSame) {
-    const n = amounts.length;
     descEl.textContent = n === 2
       ? splitLabels.join(' · ')
       : n + ' equal payments';
@@ -1491,7 +1509,7 @@ function printSummary() {
   // Payment plan rows
   const planRows = [
     {id:'plan-5050', name:'50 / 50'},
-    {id:'plan-3pay', name:'3-Payment'},
+    {id:'plan-3pay', name:'3-Payments'},
   ].map(p => {
     const el = $(p.id);
     const amt  = el.querySelector('.plan-amt').textContent;
